@@ -8,6 +8,8 @@ const { check } = require('express-validator');
 const router = Router();
 
 const { validateFields } = require('../middlewares/validate-fields');
+const { validateJWT } = require('../middlewares/validate-jwt');
+
 const { 
   createUser, 
   userLogin, 
@@ -34,7 +36,7 @@ router.post(
   createUser
 );
 
-router.get('/renew', renewToken);
+router.get('/renew', validateJWT, renewToken);
 
 
 
