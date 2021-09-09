@@ -19,7 +19,7 @@ app.use(express.json());
 
 //Routes
 app.use('/api/auth', require('./routes/auth'));
-app.use()
+app.use('/api/events', require('./routes/events'));
 
 //Listen
 app.listen(process.env.PORT, () => {

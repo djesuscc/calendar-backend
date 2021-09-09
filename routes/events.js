@@ -3,24 +3,49 @@
   /api/events
 */
 const { Router } = require("express");
+const { check } = require('express-validator');
 const router = Router();
 
 const { 
-  getEvent,
+  getEvents,
   createEvent,
   updateEvent,
   deleteEvent
 } = require('../controllers/event');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { validateFields } = require('../middlewares/validate-fields');
+const { isDate } = require('../helpers/isDate');
+
+//Validate JWT
+router.use(validateJWT);
 
 //Get events
-router.get('/', validateJWT, getEvent);
+router.get('/', getEvents);
 
 //Create event
-router.post('/', validateJWT, createEvent);
+router.post(
+  '/', 
+  [
+    check('title', 'Title is required').not().isEmpty(),
+    check('start', 'Start date is required').custom(isDate),
+    check('end', 'End date is required').custom(isDate),
+    validateFields,
+  ], 
+  createEvent
+);
 
 //Update event
-router.put('/:id', validateJWT, updateEvent);
+router.put(
+  '/:id',
+  [
+    check('title', 'Title is required').not().isEmpty(),
+    check('start', 'Start date is required').custom(isDate),
+    check('end', 'End date is required').custom(isDate),
+    validateFields,
+  ], 
+  updateEvent);
 
 //Delete event
-router.delete('/:id', validateJWT, deleteEvent);
+router.delete('/:id', deleteEvent);
+
+module.exports = router;
