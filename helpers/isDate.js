@@ -3,8 +3,7 @@ const moment = require('moment');
 const isDate = (value) => {
   let isValid = false;
   const date = moment(value);
-
-  if (value > 0 && date.isValid()) {
+  if (date.isValid()) {
     isValid = true;
   }
 
